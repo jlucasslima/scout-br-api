@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>ScoutBR | OneFootball Style</title>
+    <style>
+        :root { --accent: #f1c40f; --bg: #0d0e12; --card: #1a1c24; --text: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 40px; display: flex; flex-direction: column; align-items: center; }
+        
+        .search-area { margin-bottom: 40px; display: flex; gap: 10px; }
+        input { background: #1a1c24; border: 1px solid #333; color: white; padding: 12px 20px; border-radius: 30px; width: 300px; }
+        button { background: var(--accent); border: none; padding: 12px 30px; border-radius: 30px; font-weight: bold; cursor: pointer; }
+
+        .player-card { background: var(--card); border-radius: 25px; padding: 40px; width: 380px; text-align: center; border: 1px solid #2a2c35; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .avatar { width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--accent); margin-bottom: 20px; }
+        
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 30px; }
+        .stat-box { background: #242631; padding: 15px; border-radius: 15px; }
+        .stat-val { font-size: 24px; font-weight: bold; color: var(--accent); display: block; }
+        .stat-lbl { font-size: 10px; color: #888; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+
+    <div class="search-area">
+        <input type="text" id="pName" placeholder="Pesquisar craque (Ex: Garro, Yuri Alberto)...">
+        <button onclick="buscar()">ANALISAR</button>
+    </div>
+
+    <div id="display"></div>
+
+    <script>
+        function buscar() {
+            const nome = document.getElementById('pName').value;
+            fetch('/scout/ficha/' + nome)
+                .then(res => res.json())
+                .then(data => {
+                    if(!data || data.length === 0) return alert("Jogador não encontrado!");
+                    const p = data[0];
+                    
+                    const gols = p.player_goals && p.player_goals !== "" ? p.player_goals : "0";
+                    const ast = p.player_assists && p.player_assists !== "" ? p.player_assists : "0";
+                    const nota = p.player_rating && p.player_rating !== "" ? p.player_rating : "7.20";
+                    const jogos = p.player_match_played && p.player_match_played !== "" ? p.player_match_played : "0";
+
+                    document.getElementById('display').innerHTML = `
+                        <div class="player-card">
+                            <img src="${p.player_image}" class="avatar" onerror="this.src='https://via.placeholder.com/160'">
+                            <h2 style="margin:0">${p.player_name}</h2>
+                            <p style="color:#666">${p.team_name} | ${p.player_type}</p>
+                            <div class="stats-grid">
+                                <div class="stat-box"><span class="stat-val">${gols}</span><span class="stat-lbl">Gols</span></div>
+                                <div class="stat-box"><span class="stat-val">${ast}</span><span class="stat-lbl">Assists</span></div>
+                                <div class="stat-box"><span class="stat-val">${nota}</span><span class="stat-lbl">Nota</span></div>
+                                <div class="stat-box"><span class="stat-val">${jogos}</span><span class="stat-lbl">Jogos</span></div>
+                            </div>
+                        </div>
+                    `;
+                });
+        }
+    </script>
+</body>
+</html>

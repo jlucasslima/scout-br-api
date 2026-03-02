@@ -10,16 +10,17 @@ public class Time {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // No SQL, o ID geralmente é um número (Long)
+    private Long id; 
     
     private String nome;
     private String estado;
-    private int pontos;
-    private int vitorias;
+    // Trocamos 'int' por 'Integer' para o banco aceitar valores vazios na hora do relacionamento
+    private Integer pontos;
+    private Integer vitorias;
 
     public Time() {}
 
-    public Time(String nome, String estado, int pontos, int vitorias) {
+    public Time(String nome, String estado, Integer pontos, Integer vitorias) {
         this.nome = nome;
         this.estado = estado;
         this.pontos = pontos;
@@ -32,8 +33,8 @@ public class Time {
     public void setNome(String nome) { this.nome = nome; }
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
-    public int getPontos() { return pontos; }
-    public void setPontos(int pontos) { this.pontos = pontos; }
-    public int getVitorias() { return vitorias; }
-    public void setVitorias(int vitorias) { this.vitorias = vitorias; }
+    public Integer getPontos() { return pontos; }
+    public void setPontos(Integer pontos) { this.pontos = pontos; }
+    public Integer getVitorias() { return vitorias; }
+    public void setVitorias(Integer vitorias) { this.vitorias = vitorias; }
 }
