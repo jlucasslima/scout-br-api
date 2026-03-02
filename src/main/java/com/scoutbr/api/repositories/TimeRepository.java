@@ -1,8 +1,7 @@
 package com.scoutbr.api.repositories;
 
 import com.scoutbr.api.models.Time;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TimeRepository extends MongoRepository<Time, String> {
-
+public interface TimeRepository extends JpaRepository<Time, Long> {
 }
